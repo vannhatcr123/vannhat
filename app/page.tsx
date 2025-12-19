@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import HeroVideo, { type VideoItem } from "@/components/HeroVideo";
 import HeroDesign from "@/components/HeroDesign";
-
+import CVPreview from "@/components/CVPreview";
 
 const videos: VideoItem[] = [
   {
@@ -78,6 +78,7 @@ export default function Home() {
       <Hero />
       <HeroVideo videos={videos} />
       <HeroDesign/>
+      <CVPreview/>
     </>
   );
 }
