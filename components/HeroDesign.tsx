@@ -58,7 +58,7 @@ export default function HeroDesign() {
 
                     {/* ===== TITLE ===== */}
                     <div className="mb-14">
-                        <span className="absolute -top-4 left-58 h-[3px] w-16 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" />
+                        <span className="absolute -top-4 left-80 h-[3px] w-16 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" />
                         <h2 className="text-[38px] md:text-[42px] font-extrabold tracking-tight text-white">
                             Design{' '}
                             <span
