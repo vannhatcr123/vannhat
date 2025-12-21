@@ -53,12 +53,12 @@ export default function HeroDesign() {
     return (
         <>
             {/* ================= SECTION ================= */}
-            <section className="pb-24 relative">
+            <section className="pb-24 relative ">
                 <div className="max-w-7xl mx-auto px-6">
 
                     {/* ===== TITLE ===== */}
-                    <div className="mb-14">
-                        <span className="absolute -top-4 left-80 h-[3px] w-16 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" />
+                    <div className="mb-14 relative w-fit">
+                        <span className="absolute -top-4 left-58 h-[3px] w-16 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" />
                         <h2 className="text-[38px] md:text-[42px] font-extrabold tracking-tight text-white">
                             Design{' '}
                             <span
