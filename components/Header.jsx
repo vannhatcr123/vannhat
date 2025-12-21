@@ -23,16 +23,26 @@ export default function Header() {
 
     return (
         <>
-            <header className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
+            {/* ================= HEADER ================= */}
+            <header
+                className="
+          fixed top-0 left-0 w-full z-50
+          bg-gradient-to-b from-black/40 to-black/20
+          backdrop-blur-2xl
+          border-b border-white/10
+        "
+            >
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
                     {/* LOGO */}
                     <Link
                         href="#home"
-                        className="text-[22px] font-bold tracking-tight font-[var(--font-space-grotesk)] leading-none"
+                        className="text-[22px] font-bold tracking-tight leading-none"
                     >
-                        <span className="text-black">Video</span>{" "}
-                        <span className="text-indigo-600">Editor</span>
+                        <span className="text-white">Video</span>{" "}
+                        <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                            Editor
+                        </span>
                     </Link>
 
                     {/* DESKTOP NAV */}
@@ -41,7 +51,10 @@ export default function Header() {
                             <motion.a
                                 key={item.name}
                                 href={item.href}
-                                className="relative text-[15px] font-medium text-gray-700 hover:text-black"
+                                className="
+                  relative text-[15px] font-medium
+                  text-white/80 hover:text-white
+                "
                                 whileHover="hover"
                                 initial="rest"
                                 animate="rest"
@@ -53,7 +66,10 @@ export default function Header() {
                                         hover: { width: "100%", opacity: 1 },
                                     }}
                                     transition={{ duration: 0.25, ease: "easeOut" }}
-                                    className="absolute left-0 -bottom-1 h-[2px] bg-indigo-600"
+                                    className="
+                    absolute left-0 -bottom-1 h-[2px]
+                    bg-gradient-to-r from-indigo-400 to-cyan-400
+                  "
                                 />
                             </motion.a>
                         ))}
@@ -67,7 +83,7 @@ export default function Header() {
                     {/* MOBILE BUTTON */}
                     <button
                         onClick={() => setOpen(true)}
-                        className="md:hidden text-gray-700"
+                        className="md:hidden text-white hover:text-indigo-400 transition-colors"
                         aria-label="Open menu"
                     >
                         <Menu size={26} />
@@ -79,14 +95,19 @@ export default function Header() {
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setOpen(false)}
                     >
                         <motion.div
-                            className="absolute top-0 left-0 w-full bg-white rounded-b-2xl px-6 pt-6 pb-8"
+                            className="
+                absolute top-0 left-0 w-full
+                bg-gradient-to-b from-black/80 to-black/60
+                backdrop-blur-2xl
+                rounded-b-3xl px-6 pt-6 pb-8
+              "
                             initial={{ y: -40, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -40, opacity: 0 }}
@@ -95,10 +116,10 @@ export default function Header() {
                         >
                             {/* HEADER */}
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-lg font-bold">
+                                <span className="text-lg font-bold text-white">
                                     Menu
                                 </span>
-                                <button onClick={() => setOpen(false)}>
+                                <button onClick={() => setOpen(false)} className="text-white">
                                     <X size={24} />
                                 </button>
                             </div>
@@ -111,8 +132,10 @@ export default function Header() {
                                         href={item.href}
                                         onClick={() => setOpen(false)}
                                         className="
-                      text-[18px] font-semibold text-gray-800
-                      hover:text-indigo-600 transition-colors
+                      text-[18px] font-semibold
+                      text-white/85
+                      hover:text-indigo-400
+                      transition-colors
                     "
                                     >
                                         {item.name}
@@ -121,7 +144,7 @@ export default function Header() {
                             </div>
 
                             {/* SOCIAL */}
-                            <div className="mt-8 pt-6 border-t border-gray-200 flex gap-6">
+                            <div className="mt-8 pt-6 border-t border-white/10 flex gap-6">
                                 <Social />
                             </div>
                         </motion.div>
@@ -141,7 +164,7 @@ function Social() {
                 target="_blank"
                 aria-label="Facebook"
                 whileHover={{ scale: 1.15 }}
-                className="text-gray-500 hover:text-blue-600 transition-colors"
+                className="text-white/60 hover:text-blue-500 transition-colors"
             >
                 <Facebook size={20} strokeWidth={1.8} />
             </motion.a>
@@ -151,7 +174,7 @@ function Social() {
                 target="_blank"
                 aria-label="Instagram"
                 whileHover={{ scale: 1.15 }}
-                className="text-gray-500 hover:text-pink-500 transition-colors"
+                className="text-white/60 hover:text-pink-500 transition-colors"
             >
                 <Instagram size={20} strokeWidth={1.8} />
             </motion.a>
@@ -161,10 +184,11 @@ function Social() {
                 target="_blank"
                 aria-label="Zalo"
                 whileHover={{ scale: 1.15 }}
-                className="text-gray-500 hover:text-sky-500 transition-colors"
+                className="text-white/60 hover:text-cyan-400 transition-colors"
             >
                 <MessageCircle size={20} strokeWidth={1.8} />
             </motion.a>
         </>
     );
 }
+

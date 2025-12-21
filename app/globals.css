@@ -1,35 +1,145 @@
-
 @import "tailwindcss";
 
-
+/* =========================
+   FONT
+========================= */
 body {
-  font-family: var(--font-space-grotesk), sans-serif;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
 }
+
+/* =========================
+   COLOR TOKENS (OAI)
+========================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --oai-purple: #7c7cff;
+  --oai-blue: #60a5fa;
+  --oai-cyan: #5eead4;
+  --oai-pink: #f472b6;
+
+  --background: #fdfefe;
+  /* trắng sạch */
+  --foreground: #0f172a;
+  /* slate-900 */
 }
-         @keyframes snow {
-           0% {
-             transform: translateY(0);
-             opacity: 0;
-           }
-    
-           10% {
-             opacity: 1;
-           }
-    
-           100% {
-             transform: translateY(110vh);
-             opacity: 0;
-           }
-         }
-    
-         .animate-snow {
-           animation-name: snow;
-           animation-timing-function: linear;
-           animation-iteration-count: infinite;
-         }
+
+/* =========================
+   BASE
+========================= */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+/* =========================
+   GLASS BACKGROUND (MAIN)
+========================= */
+.bg-glass-gradient {
+  background:
+    radial-gradient(900px at 12% 10%, rgba(124, 124, 255, 0.22), transparent 45%),
+    radial-gradient(850px at 88% 18%, rgba(96, 165, 250, 0.22), transparent 45%),
+    radial-gradient(700px at 50% 85%, rgba(94, 234, 212, 0.18), transparent 50%),
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.78),
+      rgba(248, 250, 255, 0.55));
+}
+
+/* =========================
+   OAI BACKGROUND (SECTION)
+========================= */
+.bg-oai {
+  background:
+    radial-gradient(700px circle at 20% 15%, rgba(124, 124, 255, 0.26), transparent 45%),
+    radial-gradient(650px circle at 80% 28%, rgba(94, 234, 212, 0.28), transparent 48%),
+    radial-gradient(600px circle at 50% 85%, rgba(244, 114, 182, 0.22), transparent 50%),
+    #fdfefe;
+}
+
+/* =========================
+   HERO / BANNER GRADIENT
+========================= */
+.bg-oai-gradient {
+  background:
+    radial-gradient(1200px at 12% 10%, rgba(124, 124, 255, 0.30), transparent 48%),
+    radial-gradient(1000px at 88% 18%, rgba(96, 165, 250, 0.28), transparent 48%),
+    radial-gradient(900px at 50% 88%, rgba(168, 85, 247, 0.24), transparent 52%),
+    linear-gradient(to bottom,
+      rgb(250, 252, 255),
+      rgb(240, 245, 255));
+}
+
+/* =========================
+   GLASS CARD
+========================= */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* =========================
+   GLASS DARK (MODAL / VIDEO)
+========================= */
+.glass-dark {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* =========================
+   TEXT COLORS (READABLE)
+========================= */
+.text-primary {
+  color: #0f172a;
+}
+
+.text-secondary {
+  color: #475569;
+}
+
+.text-muted {
+  color: #64748b;
+}
+
+/* =========================
+   GRADIENT TEXT
+========================= */
+.text-oai-gradient {
+  background: linear-gradient(90deg,
+      var(--oai-purple),
+      var(--oai-blue),
+      var(--oai-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn-oai {
+  background: linear-gradient(135deg,
+      var(--oai-purple),
+      var(--oai-blue));
+  color: white;
+  box-shadow:
+    0 10px 30px rgba(124, 124, 255, 0.35);
+}
+
+.btn-oai:hover {
+  background: linear-gradient(135deg,
+      var(--oai-blue),
+      var(--oai-cyan));
+}
+
+/* =========================
+   ANIMATED GRADIENT
+========================= */
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -46,24 +156,25 @@ body {
 
 .animate-gradient {
   background-size: 200% 200%;
-  animation: gradient 6s ease infinite;
-}
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  animation: gradient 8s ease-in-out infinite;
 }
 
+/* =========================
+   DARK MODE (CLEAN)
+========================= */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #070a12;
+    --foreground: #e5e7eb;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  .glass {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
 }

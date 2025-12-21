@@ -1,8 +1,16 @@
 'use client';
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, ZoomOut, FileDown, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import {
+    X,
+    ZoomIn,
+    ZoomOut,
+    FileDown,
+    ChevronLeft,
+    ChevronRight
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
     open: boolean;
@@ -10,127 +18,175 @@ type Props = {
 };
 
 export default function CVModal({ open, onClose }: Props) {
-    // 1. Danh sách các trang CV của bạn (Thêm bao nhiêu tùy ý)
     const cvPages = [
         "https://cdn1.vieclam24h.vn/images/assets/img/072-blue-simple-professional.jpg",
-        "https://cdn1.vieclam24h.vn/images/assets/img/072-blue-simple-professional.jpg", // Thay bằng link trang 2
+        "https://cdn1.vieclam24h.vn/images/assets/img/072-blue-simple-professional.jpg",
     ];
 
-    const [currentPage, setCurrentPage] = useState(0);
+    const [mounted, setMounted] = useState(false);
+    const [page, setPage] = useState(0);
     const [zoom, setZoom] = useState(1);
-
-    const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.2, 2.5));
-    const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.2, 0.5));
-
-    const nextPage = () => {
-        if (currentPage < cvPages.length - 1) {
-            setCurrentPage(prev => prev + 1);
-            setZoom(1); // Reset zoom khi đổi trang cho dễ nhìn
-        }
-    };
-
-    const prevPage = () => {
-        if (currentPage > 0) {
-            setCurrentPage(prev => prev - 1);
-            setZoom(1);
-        }
-    };
-
     const handleDownload = () => {
-        const link = document.createElement('a');
-        link.href = '/path-to-your-cv.pdf';
-        link.download = 'CV_Van_Nhat.pdf';
+        const link = document.createElement("a");
+        link.href = "/cv/CV_Van_Nhat.pdf";
+        link.download = "CV_Van_Nhat.pdf";
         link.click();
     };
 
-    return (
+    useEffect(() => setMounted(true), []);
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {open && (
                 <>
+                    {/* OVERLAY */}
                     <motion.div
-                        className="fixed inset-0 bg-black/90 z-50 backdrop-blur-md"
+                        className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
                     />
 
+                    {/* MODAL */}
                     <motion.div
-                        className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-6 pointer-events-none"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
+                        className="fixed inset-0 z-[100000] flex items-center justify-center p-3 md:p-6"
+                        initial={{ opacity: 0, scale: 0.96 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.96 }}
                     >
                         <div
-                            className="relative bg-[#1a1a1a] rounded-2xl max-w-5xl w-full h-[95vh] overflow-hidden shadow-2xl flex flex-col pointer-events-auto border border-white/10"
-                            onClick={(e) => e.stopPropagation()}
+                            className="
+                                relative w-full max-w-5xl h-[95vh]
+                                rounded-2xl overflow-hidden
+                                bg-[#0B0F1A]
+                                border border-white/10
+                                shadow-[0_40px_120px_rgba(99,102,241,0.45)]
+                                flex flex-col
+                            "
+                            onClick={e => e.stopPropagation()}
                         >
                             {/* TOOLBAR */}
-                            <div className="flex flex-wrap items-center justify-between p-4 bg-[#252525] border-b border-white/10 sticky top-0 z-20 gap-4">
+                            <div className="
+                                sticky top-0 z-30
+                                flex flex-wrap items-center justify-between gap-3
+                                px-4 py-3
+                                bg-[#0F172A]/90 backdrop-blur
+                                border-b border-white/10
+                            ">
+                                {/* LEFT */}
                                 <div className="flex items-center gap-2">
-                                    <button onClick={handleZoomIn} className="p-2.5 bg-[#333] hover:bg-indigo-600 text-white rounded-xl shadow-lg transition-all"><ZoomIn size={20} strokeWidth={2.5} /></button>
-                                    <button onClick={handleZoomOut} className="p-2.5 bg-[#333] hover:bg-indigo-600 text-white rounded-xl shadow-lg transition-all"><ZoomOut size={20} strokeWidth={2.5} /></button>
-
-                                    <div className="w-[1px] h-8 bg-white/10 mx-1" />
-
-                                    {/* BỘ CHUYỂN TRANG */}
-                                    <div className="flex items-center gap-2 bg-[#333] p-1 rounded-xl border border-white/5">
+                                    {[ZoomIn, ZoomOut].map((Icon, i) => (
                                         <button
-                                            onClick={prevPage}
-                                            disabled={currentPage === 0}
-                                            className="p-1.5 hover:bg-indigo-600 text-white rounded-lg disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                                            key={i}
+                                            onClick={() =>
+                                                i === 0
+                                                    ? setZoom(z => Math.min(z + 0.2, 2.5))
+                                                    : setZoom(z => Math.max(z - 0.2, 0.5))
+                                            }
+                                            className="
+                                                p-2.5 rounded-xl
+                                                bg-white/5
+                                                hover:bg-gradient-to-r
+                                                hover:from-indigo-400 hover:to-cyan-400
+                                                transition
+                                            "
                                         >
-                                            <ChevronLeft size={20} />
+                                            <Icon size={18} className="text-white" />
                                         </button>
-                                        <span className="text-white text-xs font-bold px-2 min-w-[60px] text-center">
-                                            TRANG {currentPage + 1} / {cvPages.length}
-                                        </span>
+                                    ))}
+
+                                    <div className="w-px h-7 bg-white/10 mx-2" />
+
+                                    <div className="flex items-center gap-2 bg-white/5 px-2 py-1 rounded-xl">
                                         <button
-                                            onClick={nextPage}
-                                            disabled={currentPage === cvPages.length - 1}
-                                            className="p-1.5 hover:bg-indigo-600 text-white rounded-lg disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                                            onClick={() => setPage(p => Math.max(0, p - 1))}
+                                            disabled={page === 0}
+                                            className="
+                                                p-1.5 rounded-lg
+                                                hover:bg-gradient-to-r hover:from-indigo-400 hover:to-cyan-400
+                                                disabled:opacity-30
+                                            "
                                         >
-                                            <ChevronRight size={20} />
+                                            <ChevronLeft size={18} className="text-white" />
+                                        </button>
+
+                                        <span className="text-xs font-semibold text-white/80 min-w-[56px] text-center">
+                                            {page + 1}/{cvPages.length}
+                                        </span>
+
+                                        <button
+                                            onClick={() => setPage(p => Math.min(cvPages.length - 1, p + 1))}
+                                            disabled={page === cvPages.length - 1}
+                                            className="
+                                                p-1.5 rounded-lg
+                                                hover:bg-gradient-to-r hover:from-indigo-400 hover:to-cyan-400
+                                                disabled:opacity-30
+                                            "
+                                        >
+                                            <ChevronRight size={18} className="text-white" />
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3">
+                                {/* RIGHT */}
+                                <div className="flex items-center gap-2">
                                     <button
                                         onClick={handleDownload}
-                                        className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition-all font-bold text-xs shadow-lg active:scale-95"
+                                        className="
+        flex items-center gap-2
+        px-4 py-2 rounded-xl
+        bg-gradient-to-r from-indigo-400 to-cyan-400
+        text-black font-bold text-xs
+        hover:shadow-[0_0_30px_rgba(99,102,241,0.6)]
+        transition
+    "
                                     >
-                                        <FileDown size={18} />
-                                        <span>TẢI PDF</span>
+                                        <FileDown size={16} />
+                                        PDF
                                     </button>
-                                    <button onClick={onClose} className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 hover:bg-red-500 text-white transition-all border border-white/10"><X size={22} /></button>
+
+
+                                    <button
+                                        onClick={onClose}
+                                        className="
+                                            w-9 h-9 rounded-xl
+                                            flex items-center justify-center
+                                            bg-white/5
+                                            hover:bg-red-500
+                                            transition
+                                        "
+                                    >
+                                        <X size={18} className="text-white" />
+                                    </button>
                                 </div>
                             </div>
 
-                            {/* HIỂN THỊ NỘI DUNG */}
-                            <div className="overflow-auto bg-[#121212] p-4 md:p-8 flex justify-center items-start flex-1 scrollbar-hide">
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={currentPage} // Quan trọng để motion nhận biết đổi trang
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.2 }}
-                                        style={{ scale: zoom }}
-                                        className="origin-top"
-                                    >
-                                        <img
-                                            src={cvPages[currentPage]}
-                                            alt={`CV Page ${currentPage + 1}`}
-                                            className="w-full max-w-4xl h-auto rounded-md shadow-2xl border border-white/5"
-                                        />
-                                    </motion.div>
-                                </AnimatePresence>
+                            {/* CONTENT */}
+                            <div className="flex-1 overflow-auto bg-black p-6 flex justify-center">
+                                <motion.img
+                                    key={page}
+                                    src={cvPages[page]}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.25 }}
+                                    style={{ scale: zoom }}
+                                    className="
+                                        origin-top
+                                        max-w-4xl
+                                        rounded-xl
+                                        border border-white/10
+                                        shadow-2xl
+                                    "
+                                />
                             </div>
                         </div>
                     </motion.div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }
